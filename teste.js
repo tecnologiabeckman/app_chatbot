@@ -21,18 +21,15 @@ values.push({
     nome: 'ANA.MARQUES'
 });
 
-console.log(JSON.stringify(values));
-
-var arrayConfirmaConsulta = values.filter(function(obj) { return obj.id == 5; });
-var pos = values.indexOf(arrayConfirmaConsulta[0].nome);
+//var indice = values.findIndex(obj => obj.id == numeroARemover);
+var indice = values.findIndex(obj => obj.nome == 'JOAO.SANTOS');
+values.splice(indice, 1);
 
 values.forEach(element => {
-   console.log(element); 
-   //console.log(element.nome); 
-   //var pos = values.indexOf(element.nome);
-   //console.log(`Posição: ${pos}`);
+    console.log(element); 
 });
 
-console.log(`POSIÇÃO: ${pos}`);
+console.log(`POSIÇÃO: ${indice}`);
+
+//var arrayConfirmaConsulta = values.filter(function(obj) { return obj.id == 5; });
 //console.log(`ENCONTRADO: ${JSON.stringify(arrayConfirmaConsulta)}`);
-console.log(`ENCONTRADO: ${arrayConfirmaConsulta[0].nome}`);
