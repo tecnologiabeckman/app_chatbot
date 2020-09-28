@@ -32,3 +32,5 @@
 <a href="https://waguide.pedroslopez.me/">Whatsapp-web.js</a> 
 </br>
 <a href="https://github.com/googleapis/nodejs-dialogflow">Nodejs Repositório DialogFlow</a>
+</br>
+<a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array#:~:text=Arrays%20s%C3%A3o%20objetos%20semelhantes%20a,tipos%20de%20elementos%20s%C3%A3o%20fixos.">Array Javascript</a>
