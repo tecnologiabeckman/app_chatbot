@@ -1,7 +1,19 @@
 const fs = require('fs');
 const qrcode = require('qrcode-terminal');
-
 const { Client } = require('whatsapp-web.js');
+const util = require('./utils/util');
+const controllerPesquisa = require('./controller/pesquisaController');
+
+var sessaoMain = require('./model/sessao');
+require('dotenv').config();
+const mongoose = require('mongoose');
+//mongoose.connect('mongodb://10.51.19.55:27017/nps', {
+mongoose.connect(process.env.URL_DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+var contatos = Array();
 
 // Path where the session data will be stored
 const SESSION_FILE_PATH = './session.json';
@@ -33,12 +45,36 @@ client.on('qr', qr => {
 
 client.on('ready', () => {
     console.log('Client is ready!');
+    await rotinaPesquisa();
 });
 
 client.initialize();
 
-client.on('message', message => {
+client.on('message', async message => {
+
+    let sessao = await sessaoMain.findOne({
+        telefone: util.formataTelefone(message.from,'mongo'),
+        finalizada: 0
+    });
+
+    if(sessao){ //possui sessão
+        switch(sessao.sessao){
+            case 'beckman':
+                    await controllerPesquisa.iniciarPesquisa(client, message, sessao);
+                break;
+        }
+    }
+/*
 	if(message.body === '!ping') {
 		client.sendMessage(message.from, 'pong');
-	}
+    }
+    */
 });
+
+async function rotinaPesquisa()
+{
+    contatos.push({
+        id: 1,
+        telefone: '559294493350'
+    });
+}
