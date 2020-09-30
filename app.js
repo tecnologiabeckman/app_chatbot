@@ -7,7 +7,7 @@ const controllerPesquisa = require('./controller/pesquisaController');
 var sessaoMain = require('./model/sessao');
 require('dotenv').config();
 const mongoose = require('mongoose');
-//mongoose.connect('mongodb://10.51.19.55:27017/nps', {
+
 mongoose.connect(process.env.URL_DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -96,7 +96,29 @@ async function rotinaPesquisa()
         });
 
         if(!sessao){
+
+
+
             client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${mensagemConfirmacao}`);  // 1ª PERGUNTA DA PESQUISA
+
+            await new sessaoMain()
+            .save({
+                telefone: util.formataTelefone(rp.telefone, 'mongo'),
+                sessao: 'beckman',
+                etapa: '01',
+                finalizada: 0
+            })
+            .then(() => {
+                return {
+                    status: 'ok',
+                    msg: 'Cadastrado com sucesso..'
+                }
+            }).catch(() => {
+                return {
+                    status: 'falha',
+                    msg: 'Erro ao cadastrar sessao..'
+                }
+            });;
         }
     });
    
