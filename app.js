@@ -97,9 +97,9 @@ async function rotinaPesquisa()
 
         if(!sessao){
 
+            let msn = `Olá Cliente\n\n Bem-vindo a nossa pesquisa\n1 - Qual seu nome completo?`;
 
-
-            client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${mensagemConfirmacao}`);  // 1ª PERGUNTA DA PESQUISA
+            client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${msn}`);  // 1ª PERGUNTA DA PESQUISA
 
             await new sessaoMain()
             .save({
@@ -118,7 +118,7 @@ async function rotinaPesquisa()
                     status: 'falha',
                     msg: 'Erro ao cadastrar sessao..'
                 }
-            });;
+            });
         }
     });
    
