@@ -23,6 +23,9 @@
 
 ``` npm start ```
 
+### .env
+``` URL_DATABASE=mongodb://10.51.19.55:27017/beckman ```
+
 ### DEPENDÊNCIAS PARA FUNCIONAMENTO
 <p>    
     Essa aplicação utiliza o AXIOS para se conectar as API's.

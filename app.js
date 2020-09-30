@@ -77,4 +77,34 @@ async function rotinaPesquisa()
         id: 1,
         telefone: '559294493350'
     });
+/*
+    contatos.push({
+        id: 1,
+        telefone: '559294493350'
+    },
+    {
+        id: 1,
+        telefone: '559294493350'
+    });
+*/
+    
+    asyncForEach(contatos, async (rp) => {
+        let sessao = await sessaoMain.findOne({
+            sessao: 'beckman',
+            etapa: '01',
+            finalizada: 0
+        });
+
+        if(!sessao){
+            client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${mensagemConfirmacao}`);  // 1ª PERGUNTA DA PESQUISA
+        }
+    });
+   
+
+}
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
 }
