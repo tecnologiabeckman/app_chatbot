@@ -14,7 +14,7 @@ let perguntas = [
                     `2 - Você voltaria a nossa loja?\n*sim* ou *não*`,
                     `3 - De 0 a 10 quanto você daria para nosso atendimento?`,
                     `4 - Qual sugestão de melhoria você daria para nós?`,
-                    `Agradecemos sua participação nessa pesquisa !!!`
+                    `Agradecemos sua participação nessa pesquisa !!! 👍😁`
                 ];
 
 async function iniciarPesquisa(client, message, sessao){

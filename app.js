@@ -98,7 +98,7 @@ async function rotinaPesquisa()
 
         if(!sessao){
 
-            let msn = `Olá Cliente\n\n Bem-vindo a nossa pesquisa\n1 - Qual seu nome completo?`;
+            let msn = `Olá Cliente ☺\n\n Bem-vindo a nossa pesquisa\n1 - Qual seu nome completo?`;
 
             client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${msn}`);  // 1ª PERGUNTA DA PESQUISA
 
