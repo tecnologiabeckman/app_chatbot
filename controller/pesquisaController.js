@@ -19,7 +19,7 @@ let perguntas = [
 
 async function iniciarPesquisa(client, message, sessao){
     // Verifico as etapas
-    if (sessao.etapa == '01') {
+    if (sessao.etapa == '01') { // Primeira pergunta
         // Insere pesquisa
         await new pesquisaCollection()
                     .save({
@@ -46,7 +46,7 @@ async function iniciarPesquisa(client, message, sessao){
         });
         
     }else
-    if (sessao.etapa == '02') {
+    if (sessao.etapa == '02') { // Segunda Pergunta
         if(util.verificarEscolha(message.body) !=  'inválido')
         {
             // Insere pesquisa
@@ -67,7 +67,7 @@ async function iniciarPesquisa(client, message, sessao){
                                 msg: 'Erro ao cadastrar sessao..'
                             }
                         });
-            client.sendMessage(message.from, perguntas[1]);
+            client.sendMessage(message.from, perguntas[2]);
             // Atualiza sessão
             await sessao.updateOne({
                 etapa: '03',
@@ -79,7 +79,7 @@ async function iniciarPesquisa(client, message, sessao){
             client.sendMessage(message.from, perguntas[1]);
         }
     }else
-    if (sessao.etapa == '03') {
+    if (sessao.etapa == '03') { // Terceira Pergunta
         if(util.verificaNota(message.body) !=  'inválido')
         {
             if(util.verificaNota(message.body) >= 0 && util.verificaNota(message.body) < 11)
@@ -88,7 +88,7 @@ async function iniciarPesquisa(client, message, sessao){
                 await new pesquisaCollection()
                                 .save({
                                     telefone: sessao.telefone,
-                                    pergunta: perguntas[1],
+                                    pergunta: perguntas[2],
                                     parametros: {respota: message.body}
                                 })
                                 .then(() => {
@@ -102,7 +102,7 @@ async function iniciarPesquisa(client, message, sessao){
                                         msg: 'Erro ao cadastrar sessao..'
                                     }
                                 });
-                client.sendMessage(message.from, perguntas[2]);
+                client.sendMessage(message.from, perguntas[3]);
                 // Atualiza sessão
                 await sessao.updateOne({
                     etapa: '04',
@@ -110,13 +110,34 @@ async function iniciarPesquisa(client, message, sessao){
                 });
             }else{
                 message.reply('*Desculpe, a opção que você informou é inválida, tente novamente informando 0 a 10*');
-                client.sendMessage(message.from, perguntas[1]);
+                client.sendMessage(message.from, perguntas[2]);
             }
         }else{
             message.reply('*Desculpe, a opção que você informou é inválida, tente novamente informando 0 a 10*');
-            client.sendMessage(message.from, perguntas[1]);
+            client.sendMessage(message.from, perguntas[2]);
         }
-    }
+    }else
+        if(sessao.etapa == '04')
+        {
+            // Insere pesquisa
+            await new pesquisaCollection()
+            .save({
+                telefone: sessao.telefone,
+                pergunta: perguntas[3],
+                parametros: {respota: message.body}
+            })
+            .then(() => {
+                return {
+                    status: 'ok',
+                    msg: 'Cadastrado com sucesso..'
+                }
+            }).catch(() => {
+                return {
+                    status: 'falha',
+                    msg: 'Erro ao cadastrar sessao..'
+                }
+            });
+        }
 
 }
 

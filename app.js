@@ -90,6 +90,7 @@ async function rotinaPesquisa()
     
     asyncForEach(contatos, async (rp) => {
         let sessao = await sessaoMain.findOne({
+            telefone: rp.telefone,
             sessao: 'beckman',
             etapa: '01',
             finalizada: 0
