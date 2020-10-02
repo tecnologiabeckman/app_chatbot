@@ -12,8 +12,8 @@ const util = require('../utils/util');
 let perguntas = [
                     `1 - Qual seu nome completo?`,
                     `2 - Você voltaria a nossa loja?\n*sim* ou *não*`,
-                    `3 - De 0 a 10 quanto você daria para nosso atendimento?`
-                    `4 - Qual sugestão de melhoria você daria para nós?`
+                    `3 - De 0 a 10 quanto você daria para nosso atendimento?`,
+                    `4 - Qual sugestão de melhoria você daria para nós?`,
                     `Agradecemos sua participação nessa pesquisa !!!`
                 ];
 
@@ -54,7 +54,7 @@ async function iniciarPesquisa(client, message, sessao){
                         .save({
                             telefone: sessao.telefone,
                             pergunta: perguntas[1],
-                            parametros: {respota: message.body}
+                            parametros: {respota: util.verificarEscolha(message.body)}
                         })
                         .then(() => {
                             return {
@@ -89,7 +89,7 @@ async function iniciarPesquisa(client, message, sessao){
                                 .save({
                                     telefone: sessao.telefone,
                                     pergunta: perguntas[2],
-                                    parametros: {respota: message.body}
+                                    parametros: {respota: util.verificaNota(message.body)}
                                 })
                                 .then(() => {
                                     return {
@@ -138,6 +138,13 @@ async function iniciarPesquisa(client, message, sessao){
                 }
             });
         }
+
+        client.sendMessage(message.from, perguntas[4]);
+        // Atualiza sessão
+        await sessao.updateOne({
+            etapa: '05',
+            parametros: {nota:message.body}
+        });
 
 }
 
