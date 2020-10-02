@@ -102,19 +102,23 @@ async function rotinaPesquisa()
 
             client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${msn}`);  // 1ª PERGUNTA DA PESQUISA
 
-            await new sessaoMain()
-            .save({
-                telefone: util.formataTelefone(rp.telefone, 'mongo'),
-                sessao: 'beckman',
-                etapa: '01',
-                finalizada: 0
-            })
+            await new sessaoMain(
+                {
+                    telefone: util.formataTelefone(rp.telefone, 'mongo'),
+                    sessao: 'beckman',
+                    etapa: '01',
+                    finalizada: 0
+                }
+            )
+            .save()
             .then(() => {
+                console.log(`SALVOU`);
                 return {
                     status: 'ok',
                     msg: 'Cadastrado com sucesso..'
                 }
             }).catch(() => {
+                console.log(`NÃO SALVOU`);
                 return {
                     status: 'falha',
                     msg: 'Erro ao cadastrar sessao..'

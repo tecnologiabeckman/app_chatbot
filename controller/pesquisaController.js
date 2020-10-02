@@ -21,12 +21,12 @@ async function iniciarPesquisa(client, message, sessao){
     // Verifico as etapas
     if (sessao.etapa == '01') { // Primeira pergunta
         // Insere pesquisa
-        await new pesquisaCollection()
-                    .save({
-                        telefone: sessao.telefone,
-                        pergunta: perguntas[0],
-                        parametros: {respota: message.body}
-                    })
+        await new pesquisaCollection({
+                            telefone: sessao.telefone,
+                            pergunta: perguntas[0],
+                            parametros: {respota: message.body}
+                        })
+                    .save()
                     .then(() => {
                         return {
                             status: 'ok',
@@ -50,12 +50,12 @@ async function iniciarPesquisa(client, message, sessao){
         if(util.verificarEscolha(message.body) !=  'inválido')
         {
             // Insere pesquisa
-            await new pesquisaCollection()
-                        .save({
-                            telefone: sessao.telefone,
-                            pergunta: perguntas[1],
-                            parametros: {respota: util.verificarEscolha(message.body)}
-                        })
+            await new pesquisaCollection({
+                                telefone: sessao.telefone,
+                                pergunta: perguntas[1],
+                                parametros: {respota: util.verificarEscolha(message.body)}
+                            })
+                        .save()
                         .then(() => {
                             return {
                                 status: 'ok',
@@ -85,12 +85,12 @@ async function iniciarPesquisa(client, message, sessao){
             if(util.verificaNota(message.body) >= 0 && util.verificaNota(message.body) < 11)
             {
                 // Insere pesquisa
-                await new pesquisaCollection()
-                                .save({
+                await new pesquisaCollection({
                                     telefone: sessao.telefone,
                                     pergunta: perguntas[2],
                                     parametros: {respota: util.verificaNota(message.body)}
                                 })
+                                .save()
                                 .then(() => {
                                     return {
                                         status: 'ok',
@@ -120,12 +120,12 @@ async function iniciarPesquisa(client, message, sessao){
         if(sessao.etapa == '04')
         {
             // Insere pesquisa
-            await new pesquisaCollection()
-            .save({
+            await new pesquisaCollection({
                 telefone: sessao.telefone,
                 pergunta: perguntas[3],
                 parametros: {respota: message.body}
             })
+            .save()
             .then(() => {
                 return {
                     status: 'ok',
