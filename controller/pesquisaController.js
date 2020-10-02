@@ -117,34 +117,34 @@ async function iniciarPesquisa(client, message, sessao){
             client.sendMessage(message.from, perguntas[2]);
         }
     }else
-        if(sessao.etapa == '04')
-        {
-            // Insere pesquisa
-            await new pesquisaCollection({
-                telefone: sessao.telefone,
-                pergunta: perguntas[3],
-                parametros: {respota: message.body}
-            })
-            .save()
-            .then(() => {
-                return {
-                    status: 'ok',
-                    msg: 'Cadastrado com sucesso..'
-                }
-            }).catch(() => {
-                return {
-                    status: 'falha',
-                    msg: 'Erro ao cadastrar sessao..'
-                }
-            });
-        }
-
+    if(sessao.etapa == '04')
+    {
+        // Insere pesquisa
+        await new pesquisaCollection({
+            telefone: sessao.telefone,
+            pergunta: perguntas[3],
+            parametros: {respota: message.body}
+        })
+        .save()
+        .then(() => {
+            return {
+                status: 'ok',
+                msg: 'Cadastrado com sucesso..'
+            }
+        }).catch(() => {
+            return {
+                status: 'falha',
+                msg: 'Erro ao cadastrar sessao..'
+            }
+        });
         client.sendMessage(message.from, perguntas[4]);
         // Atualiza sessão
         await sessao.updateOne({
             etapa: '05',
+            finalizada: 1,
             parametros: {nota:message.body}
         });
+    }
 
 }
 
