@@ -18,6 +18,7 @@ let perguntas = [
                 ];
 
 async function iniciarPesquisa(client, message, sessao){
+     
     // Verifico as etapas
     if (sessao.etapa == '01') { // Primeira pergunta
         // Insere pesquisa

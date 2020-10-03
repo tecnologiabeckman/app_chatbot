@@ -5,6 +5,7 @@ const util = require('./utils/util');
 const controllerPesquisa = require('./controller/pesquisaController');
 
 var sessaoMain = require('./model/sessao');
+let contato = require('./model/contato');
 require('dotenv').config();
 const mongoose = require('mongoose');
 
@@ -73,68 +74,50 @@ client.on('message', async message => {
 
 async function rotinaPesquisa()
 {
-    contatos.push({// wenderson
-        id: 1,
-        telefone: '559293850684'
-    },
-    { // gio
-        id: 2,
-        telefone: '559293376456'
-    },
-    { // JP
-        id: 3,
-        telefone: '559992079132'
-    },
-    { // galu
-        id: 4,
-        telefone: '559295026189'
-    },
-    { // imayle
-        id: 5,
-        telefone: '559291843540'
-    });
-
-    
-    asyncForEach(contatos, async (rp) => {
-        let sessao = await sessaoMain.findOne({
-            telefone: rp.telefone,
-            sessao: 'beckman',
-            etapa: '01',
-            finalizada: 0
-        });
-
-        if(!sessao){
-
-            let msn = `Olá Cliente ☺\n\n Bem-vindo a nossa pesquisa\n1 - Qual seu nome completo?`;
-
-            client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `Oi esse é um Chatbot teste de uma loja criado por Moisés 😀😀 para pesquisa de satisfação`);
-            client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${msn}`);  // 1ª PERGUNTA DA PESQUISA
-
-            await new sessaoMain(
-                {
-                    telefone: util.formataTelefone(rp.telefone, 'mongo'),
-                    sessao: 'beckman',
-                    etapa: '01',
-                    finalizada: 0
-                }
-            )
-            .save()
-            .then(() => {
-                console.log(`SALVOU`);
-                return {
-                    status: 'ok',
-                    msg: 'Cadastrado com sucesso..'
-                }
-            }).catch(() => {
-                console.log(`NÃO SALVOU`);
-                return {
-                    status: 'falha',
-                    msg: 'Erro ao cadastrar sessao..'
-                }
+    let contatos = await contato.find({});
+    if(contatos){
+        asyncForEach(contatos, async (rp) => {
+            let sessao = await sessaoMain.findOne({
+                telefone: rp.telefone,
+                sessao: 'beckman',
+                etapa: '01',
+                finalizada: 0
             });
-        }
-    });
-   
+
+            if(!sessao){
+
+                let msn = `Olá Cliente ☺\n\n Bem-vindo a nossa pesquisa\n1 - Qual seu nome completo?`;
+
+                client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `Oi esse é um Chatbot teste de uma loja criado por Moisés 😀😀 para pesquisa de satisfação`);
+                client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${msn}`);  // 1ª PERGUNTA DA PESQUISA
+
+                await new sessaoMain(
+                    {
+                        telefone: util.formataTelefone(rp.telefone, 'mongo'),
+                        sessao: 'beckman',
+                        etapa: '01',
+                        finalizada: 0
+                    }
+                )
+                .save()
+                .then(() => {
+                    console.log(`SALVOU`);
+                    return {
+                        status: 'ok',
+                        msg: 'Cadastrado com sucesso..'
+                    }
+                }).catch(() => {
+                    console.log(`NÃO SALVOU`);
+                    return {
+                        status: 'falha',
+                        msg: 'Erro ao cadastrar sessao..'
+                    }
+                });
+            }
+        });
+    }else{
+        console.log(`NÃO TEM CONTATOS CADASTRADOS`);
+    }
 
 }
 
