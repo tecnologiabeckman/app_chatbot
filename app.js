@@ -73,20 +73,27 @@ client.on('message', async message => {
 
 async function rotinaPesquisa()
 {
-    contatos.push({
+    contatos.push({// wenderson
         id: 1,
-        telefone: '559294493350'
-    });
-/*
-    contatos.push({
-        id: 1,
-        telefone: '559294493350'
+        telefone: '559293850684'
     },
-    {
-        id: 1,
-        telefone: '559294493350'
+    { // gio
+        id: 2,
+        telefone: '559293376456'
+    },
+    { // JP
+        id: 3,
+        telefone: '559992079132'
+    },
+    { // galu
+        id: 4,
+        telefone: '559295026189'
+    },
+    { // imayle
+        id: 5,
+        telefone: '559291843540'
     });
-*/
+
     
     asyncForEach(contatos, async (rp) => {
         let sessao = await sessaoMain.findOne({
@@ -100,6 +107,7 @@ async function rotinaPesquisa()
 
             let msn = `Olá Cliente ☺\n\n Bem-vindo a nossa pesquisa\n1 - Qual seu nome completo?`;
 
+            client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `Oi esse é um Chatbot teste de uma loja criado por Moisés 😀😀 para pesquisa de satisfação`);
             client.sendMessage(util.formataTelefone(rp.telefone, 'whatsapp'), `${msn}`);  // 1ª PERGUNTA DA PESQUISA
 
             await new sessaoMain(

@@ -12,7 +12,7 @@ const util = require('../utils/util');
 let perguntas = [
                     `1 - Qual seu nome completo?`,
                     `2 - Você voltaria a nossa loja?\n*sim* ou *não*`,
-                    `3 - De 0 a 10 quanto você daria para nosso atendimento?`,
+                    `3 - De 0 a 10 quanto você daria para nosso atendimento? 🧐`,
                     `4 - Qual sugestão de melhoria você daria para nós?`,
                     `Agradecemos sua participação nessa pesquisa !!! 👍😁`
                 ];
