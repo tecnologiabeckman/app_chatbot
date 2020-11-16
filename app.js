@@ -4,6 +4,12 @@ const { Client } = require('whatsapp-web.js');
 const util = require('./utils/util');
 const controllerPesquisa = require('./controller/pesquisaController');
 
+/** Rest do AXIOS **/
+const api = require('./rest/restApi'); // Chama o DAO-API
+const paramentrosAxios = {
+    'raizRestaurant': 'restaurant'
+};
+
 var sessaoMain = require('./model/sessao');
 let contato = require('./model/contato');
 require('dotenv').config();
@@ -13,8 +19,6 @@ mongoose.connect(process.env.URL_DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-
-var contatos = Array();
 
 // Path where the session data will be stored
 const SESSION_FILE_PATH = './session.json';
@@ -47,6 +51,7 @@ client.on('qr', qr => {
 client.on('ready', async () => {
     console.log('Client is ready!');
     await rotinaPesquisa();
+    await rotinaRestaurante();
 });
 
 client.initialize();
@@ -119,6 +124,13 @@ async function rotinaPesquisa()
         console.log(`NÃO TEM CONTATOS CADASTRADOS`);
     }
 
+}
+
+async function rotinaRestaurante(){
+    let findCliente = await api.restApi('find', `${paramentrosAxios.raizRestaurant}/clientById`,{'id':112});
+    if (findCliente.data != undefined) {
+        console.log(JSON.stringify(findCliente.data));
+    }
 }
 
 async function asyncForEach(array, callback) {
