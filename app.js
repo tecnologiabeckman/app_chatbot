@@ -139,12 +139,6 @@ async function rotinaRestaurante(){
     }
     */
 
-    //let listPratos = await api.restApi('all', `${paramentrosAxios.raizRestaurant}/pratos`,{}); // pratos
-    /*if(listPratos.data != undefined){
-        asyncForEach(listPratos.data, async (prato) => {
-        });
-    }*/
-
     let listClientes = await api.restApi('all', `${paramentrosAxios.raizRestaurant}/clients`,{}); // clientes
     if(listClientes.data != undefined){
         asyncForEach(listClientes.data, async (cliente) => { 
