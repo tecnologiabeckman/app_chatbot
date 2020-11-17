@@ -2,7 +2,9 @@ const fs = require('fs');
 const qrcode = require('qrcode-terminal');
 const { Client } = require('whatsapp-web.js');
 const util = require('./utils/util');
+const getSaudacao = require('./utils/util').getSaudacao;
 const controllerPesquisa = require('./controller/pesquisaController');
+const processaFila = require('./controller/processa_fila.controller');
 
 /** Rest do AXIOS **/
 const api = require('./rest/restApi'); // Chama o DAO-API
@@ -127,10 +129,66 @@ async function rotinaPesquisa()
 }
 
 async function rotinaRestaurante(){
+    /*
     let findCliente = await api.restApi('find', `${paramentrosAxios.raizRestaurant}/clientById`,{'id':112});
     if (findCliente.data != undefined) {
-        console.log(JSON.stringify(findCliente.data));
+        //console.log(JSON.stringify(findCliente.data));
+        asyncForEach(findCliente.data, async (rp) => {
+            console.log(JSON.stringify(rp));
+        });
     }
+    */
+
+    //let listPratos = await api.restApi('all', `${paramentrosAxios.raizRestaurant}/pratos`,{}); // pratos
+    /*if(listPratos.data != undefined){
+        asyncForEach(listPratos.data, async (prato) => {
+        });
+    }*/
+
+    let listClientes = await api.restApi('all', `${paramentrosAxios.raizRestaurant}/clients`,{}); // clientes
+    if(listClientes.data != undefined){
+        asyncForEach(listClientes.data, async (cliente) => { 
+            var dados = {
+                'telefone': util.formataTelefone(cliente.telefone, 'mongo'),
+                'sessao': 'vendarestaurante'
+               // 'identificador': `<>`
+            };                                       
+            dados.finalizada = 0;
+            dados.etapa = '01';
+            // TRUE: número cadastrado no WhatsApp, FALSE: não cadastrado
+            let numeroCadastroWhatsApp = await verificarCadastroContatoWhatsApp(util.formataTelefone(cliente.telefone, 'whatsapp'));
+            let fila = {
+                telefone: util.formataTelefone(cliente.telefone, 'mongo'),
+                prioridade: 1,
+                sessao: dados.sessao,
+                etapa: dados.etapa,
+                payload: { msg: `${getSaudacao()} ${cliente.nome}\n\nDeseja ver o nosso cardápio de Hoje?\nDigite somente: *SIM* ou *NÃO*` },
+                enviada: false
+            };
+
+            // Condição que verifica se o Número não existir no WhatsApp
+            if (numeroCadastroWhatsApp == false) {
+                fila.enviada = true;
+                dados.finalizada = 1;
+                dados.parametros = {ocorrido = `NUMERO NAO CADASTRADO`};
+            }
+
+            await new sessaoMain(dados).save(); // salva na sessão
+            await processaFila.insereFila(fila); // Insere na Fila                  
+                
+        });
+    }
+}
+
+/**
+ * Função responsável por verificar se o contato está cadastrado no WhatsApp ou não
+ * retorna TRUE -> CADASTRADO, FALSE -> NÃO CADASTRADO
+ * @param {CONTATO} contato 
+ */
+async function verificarCadastroContatoWhatsApp(contato) {
+    const isOnWhatsApp = await client.isRegisteredUser(contato);
+    //const isOnWhatsApp = await client.isRegisteredUser('559285079545@c.us');
+    return isOnWhatsApp;
 }
 
 async function asyncForEach(array, callback) {

@@ -87,6 +87,28 @@ function formataTelefone(telefone, formato){
     }
 }
 
+var getSaudacao = function getSaudacao() {
+
+    var saudacao = "";
+  
+    //Saudação   
+    var today = new Date();
+    var hourNow = today.getHours();
+  
+    if (hourNow > 18) {
+      saudacao = 'Boa noite!';
+    } else if (hourNow > 12) {
+      saudacao = 'Boa tarde!';
+    } else if (hourNow > 0) {
+      saudacao = 'Bom dia! ';
+    } else {
+      saudacao = 'Bem vindo(a)!';
+    }
+  
+    return saudacao;
+}
+
 exports.formataTelefone = formataTelefone;
 exports.verificaNota = verificaNota;
 exports.verificarEscolha = verificarEscolha;
+exports.getSaudacao = getSaudacao;
